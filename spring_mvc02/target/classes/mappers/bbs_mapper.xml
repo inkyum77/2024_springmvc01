@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="bbs">
+  	<insert id="insert">
+  		INSERT INTO bbs_t(subject, writer, content, f_name, pwd, write_date, hit) 
+		VALUES(#{subject}, #{writer}, #{content}, #{f_name}, #{pwd}, now(), #{hit} )
+  	</insert>
+  	
+  	<insert id="cinsert" parameterType="cvo">
+  		INSERT INTO comment_t(writer, content, write_date, b_idx) 
+		VALUES(#{writer}, #{content}, now(), #{b_idx} )
+  	</insert>
+  	
+  	<select id="paging" parameterType="Map" resultType="bvo">
+  		SELECT * FROM bbs_t ORDER BY b_idx DESC LIMIT #{limit} OFFSET #{offset}
+  	</select>
+  	
+  	<select id="count" resultType="int">
+  		SELECT count(*) FROM bbs_t
+  	</select>
+  	
+  	<select id="list" resultType="bvo">
+  		SELECT * FROM bbs_t
+  	</select>
+  	
+  	<select id="detail" resultType="bvo" parameterType="String">
+  		SELECT * FROM bbs_t WHERE b_idx=#{b_idx}	
+  	</select> 
+  	
+  	<select id="clist" resultType="cvo" parameterType="String" >
+  		SELECT * FROM comment_t WHERE b_idx=#{b_idx}
+  	</select>
+  	
+  	<update id="hit_update" parameterType="String">
+  		UPDATE bbs_t SET hit = hit + 1,
+  						 write_date = now() 
+  		WHERE b_idx=#{b_idx}
+  	</update>
+  	
+  	<update id="bbs_delete" parameterType="String">
+  		UPDATE bbs_t SET active = 1,
+  						 write_date = now() 
+  		WHERE b_idx=#{b_idx}  		
+  	</update>
+  	
+  	<update id="bbs_update" parameterType="bvo">
+  		UPDATE bbs_t
+  		SET subject = #{subject}, 
+  			writer = #{writer},
+  			content = #{content},
+  			f_name = #{f_name},
+  			write_date = now()
+  		WHERE b_idx=#{b_idx}
+  	</update>
+  
+  	<delete id="cdelete" parameterType="String">
+  		DELETE FROM comment_t WHERE c_idx=#{c_idx}
+  	</delete>
+  </mapper>

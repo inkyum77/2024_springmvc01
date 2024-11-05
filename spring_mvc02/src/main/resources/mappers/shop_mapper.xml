@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="shop">
+  	<select id="list" parameterType="String" resultType="svo">
+  		SELECT * FROM shop_t WHERE category = #{category}
+  	</select>
+  	
+  	<select id="detail" parameterType="String" resultType="svo">
+  		SELECT * FROM shop_t WHERE shop_idx = #{shop_idx}
+  	</select>
+  	
+  	<select id="cart_chk" parameterType="Map" resultType="cartvo">
+  		SELECT * FROM cart WHERE m_id = #{m_id} AND p_num = #{p_num}
+  	</select>
+  	
+  	<select id="cart_list" parameterType="String" resultType="cartvo">
+  		SELECT * FROM cart WHERE m_id = #{m_id} AND p_num = #{p_num}
+  	</select>
+  	
+  	<update id="cart_update" parameterType="cartvo">
+  		UPDATE cart
+  		SET p_su = p_su + 1
+  		WHERE m_id = #{m_id} AND p_num = #{p_num}
+  	</update>
+  	
+  	<insert id="cart_add" parameterType="cartvo">
+  		INSERT INTO cart(p_num, p_name, p_price, p_saleprice, p_su, m_id) 
+		VALUES(#{p_num}, #{p_name}, #{p_price}, #{p_saleprice}, 1, #{m_id})
+  	</insert>
+  	
+  	<insert id="product_insert" parameterType="svo">
+  		INSERT INTO shop_t(category ,p_num, p_name, p_company, p_price, p_saleprice, p_image_s, p_image_l, p_content, p_date) 
+		VALUES(#{category}, #{p_num}, #{p_name}, #{p_company}, #{p_price}, #{p_saleprice}, #{p_image_s}, #{p_image_L}, #{p_content}, now())
+  	</insert>
+  	
+  	<update id="cart_edit" parameterType="cartvo">
+  		UPDATE cart 
+  		SET p_su = #{p_su}
+  		WHERE m_id = #{m_id} AND p_num = #{p_num}
+  	</update>
+  	
+  	<delete	id="cart_delete" parameterType="String">
+  		DELETE FROM cart WHERE cart_idx=#{cart_idx}
+  	</delete>
+  	
+  </mapper>
