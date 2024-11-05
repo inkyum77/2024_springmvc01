@@ -1,0 +1,11 @@
+google을 이용한 이메일 보내기
+1. google에서 계정관리 - 보안
+adik gamt teza vnbj
+2. 검색창에 앱 비밀번호 생성
+3. pom.xml에서 라이브러리 넣기
+	javax.mail
+	spring-context-support
+	
+4. mail-context.xml 생성
+ - 경로 : WEB-INF/spring/mail-context.xml
+5. web.xml에 mail-context.xml 추가	

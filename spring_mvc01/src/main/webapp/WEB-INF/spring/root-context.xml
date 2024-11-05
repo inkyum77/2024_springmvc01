@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:security="http://www.springframework.org/schema/security"
+	xsi:schemaLocation="http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-5.3.xsd
+		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd">
+	
+	<!-- Root Context: defines shared resources visible to all other web components -->
+	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource"><!-- id는 보통 외부에서 호출할 때 사용하는 것 -->
+		<property name="driverClassName" value="com.mysql.cj.jdbc.Driver"/><!-- 변수,setter -->
+		<property name="url" value="jdbc:mysql://localhost:3306/ictedu_db"/>
+		<property name="username" value="ictedu"/>
+		<property name="password" value="1111"/>
+	</bean>
+	
+	<!-- mybatis:config(mapper 위치) -->
+	<!-- class단축키 : SFB -->
+	<bean id="sqlSessionFactoryBean" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource"/>
+		<property name="mapperLocations" value="classpath*:com/ict/*/service/*_mapper.xml"></property>
+	</bean>
+	
+	<!-- mybatis: SqlSessionTemplate(실제 실행하는 클래스) -->
+	<bean id="sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">
+		<constructor-arg ref="sqlSessionFactoryBean"/>
+	</bean>
+	
+	
+</beans>
